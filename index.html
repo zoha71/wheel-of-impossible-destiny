@@ -1,0 +1,1052 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#080a12">
+  <title>Wheel of Impossible Destiny</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #080a12;
+      --panel: rgba(18, 21, 36, .82);
+      --line: rgba(168, 177, 255, .16);
+      --muted: #9298b3;
+      --white: #f5f6ff;
+      --cyan: #42f5e9;
+      --pink: #ff42b3;
+      --yellow: #ffe66d;
+      --violet: #9977ff;
+    }
+
+    * { box-sizing: border-box; }
+    html { min-height: 100%; background: var(--bg); }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      overflow-x: hidden;
+      background:
+        radial-gradient(ellipse at 50% 30%, rgba(56, 36, 112, .20), transparent 45%),
+        radial-gradient(ellipse at 10% 85%, rgba(20, 168, 164, .10), transparent 35%),
+        var(--bg);
+      color: var(--white);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body::before {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background-image: radial-gradient(rgba(255,255,255,.16) .7px, transparent .7px);
+      background-size: 30px 30px;
+      content: "";
+      opacity: .18;
+      pointer-events: none;
+    }
+
+    button { font: inherit; }
+    .page {
+      width: min(1100px, 100%);
+      margin: 0 auto;
+      padding: 22px 26px 38px;
+      transition: transform .08s ease-out;
+    }
+
+    .creator {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: #adb2cd;
+      font-size: .74rem;
+      font-weight: 650;
+      letter-spacing: .14em;
+    }
+
+    .creator-mark {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 13px var(--cyan);
+    }
+
+    .topline {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #b7bdd6;
+      font-size: .76rem;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #7cff9a;
+      box-shadow: 0 0 10px #7cff9a;
+    }
+
+    .intro { padding: 35px 0 23px; text-align: center; }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      color: var(--cyan);
+      font-size: .72rem;
+      font-weight: 800;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.1rem, 6vw, 4rem);
+      font-weight: 950;
+      letter-spacing: -.065em;
+      line-height: 1;
+    }
+
+    h1 span {
+      background: linear-gradient(100deg, var(--cyan), #ad8bff 48%, var(--pink));
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      max-width: 520px;
+      margin: 13px auto 0;
+      color: var(--muted);
+      font-size: .94rem;
+      line-height: 1.6;
+    }
+
+    .game-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 318px;
+      align-items: center;
+      gap: 32px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .wheel-column { min-width: 0; }
+    .wheel-stage {
+      position: relative;
+      width: min(100%, 510px);
+      aspect-ratio: 1;
+      margin: 0 auto;
+      isolation: isolate;
+    }
+
+    .wheel-stage::before,
+    .wheel-stage::after {
+      position: absolute;
+      inset: 4%;
+      z-index: -1;
+      border-radius: 50%;
+      content: "";
+      pointer-events: none;
+    }
+
+    .wheel-stage::before {
+      background: conic-gradient(from 15deg, var(--cyan), transparent 20%, var(--pink), transparent 43%, var(--violet), transparent 72%, var(--cyan));
+      filter: blur(30px);
+      opacity: .28;
+      animation: halo 8s linear infinite;
+    }
+
+    .wheel-stage::after {
+      inset: 1%;
+      border: 1px solid rgba(127, 235, 244, .28);
+      box-shadow: inset 0 0 24px rgba(99, 190, 255, .08), 0 0 35px rgba(123, 79, 255, .10);
+    }
+
+    @keyframes halo { to { transform: rotate(360deg); } }
+
+    #wheel {
+      display: block;
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 18px 30px rgba(0, 0, 0, .5));
+    }
+
+    #particles {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+      pointer-events: none;
+    }
+
+    .pointer {
+      position: absolute;
+      top: -1.5%;
+      left: 50%;
+      z-index: 3;
+      width: 40px;
+      height: 52px;
+      transform: translateX(-50%);
+      filter: drop-shadow(0 0 9px rgba(66, 245, 233, .7));
+    }
+
+    .pointer svg { width: 100%; height: 100%; overflow: visible; }
+    .hub {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      z-index: 4;
+      display: grid;
+      width: 78px;
+      height: 78px;
+      transform: translate(-50%, -50%);
+      place-items: center;
+      border: 2px solid rgba(255, 255, 255, .75);
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #38375c, #111322 72%);
+      box-shadow: 0 0 0 6px rgba(8, 10, 18, .5), 0 0 26px rgba(66, 245, 233, .25), inset 0 0 14px rgba(255,255,255,.12);
+      color: var(--cyan);
+      font-size: 1.45rem;
+    }
+
+    .wheel-hint {
+      margin: 12px 0 0;
+      color: #777d99;
+      font-size: .75rem;
+      letter-spacing: .06em;
+      text-align: center;
+    }
+
+    .side-panel {
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: linear-gradient(150deg, rgba(26, 29, 48, .91), rgba(13, 15, 27, .94));
+      box-shadow: 0 20px 50px rgba(0, 0, 0, .22), inset 0 1px rgba(255,255,255,.035);
+    }
+
+    .panel-label {
+      margin: 0 0 12px;
+      color: #a4abc8;
+      font-size: .7rem;
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .result-card {
+      display: flex;
+      min-height: 137px;
+      flex-direction: column;
+      justify-content: center;
+      padding: 17px;
+      border: 1px solid rgba(153, 119, 255, .23);
+      border-radius: 14px;
+      background: radial-gradient(ellipse at 0% 0%, rgba(153, 119, 255, .13), transparent 70%), rgba(4, 6, 14, .45);
+    }
+
+    .result-kicker {
+      margin-bottom: 7px;
+      color: var(--violet);
+      font-size: .66rem;
+      font-weight: 850;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .result-title { margin: 0; font-size: 1.26rem; font-weight: 850; letter-spacing: -.03em; }
+    .result-copy { margin: 7px 0 0; color: #a9aec4; font-size: .84rem; line-height: 1.48; }
+
+    .spin-button {
+      position: relative;
+      display: flex;
+      width: 100%;
+      min-height: 56px;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 17px;
+      overflow: hidden;
+      border: 0;
+      border-radius: 13px;
+      background: linear-gradient(100deg, #24dacf, #6590ff 58%, #db55f3);
+      box-shadow: 0 8px 28px rgba(66, 198, 225, .22), inset 0 1px rgba(255,255,255,.38);
+      color: #081019;
+      cursor: pointer;
+      font-size: .96rem;
+      font-weight: 950;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      transition: transform .16s, filter .16s, box-shadow .16s;
+    }
+
+    .spin-button::before {
+      position: absolute;
+      top: -90%;
+      left: -40%;
+      width: 24%;
+      height: 280%;
+      transform: rotate(22deg);
+      background: rgba(255,255,255,.32);
+      content: "";
+      transition: left .5s;
+    }
+
+    .spin-button:hover { transform: translateY(-2px); filter: brightness(1.08); box-shadow: 0 11px 35px rgba(66, 198, 225, .32); }
+    .spin-button:hover::before { left: 125%; }
+    .spin-button:active { transform: translateY(1px) scale(.99); }
+    .spin-button:disabled { cursor: wait; filter: saturate(.7); opacity: .78; }
+
+    .controls-row { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-top: 16px; }
+    .sound-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: #b8bed6;
+      cursor: pointer;
+      font-size: .79rem;
+    }
+
+    .switch {
+      position: relative;
+      width: 34px;
+      height: 19px;
+      border: 1px solid rgba(180, 188, 226, .35);
+      border-radius: 20px;
+      background: #272a3d;
+      transition: background .18s;
+    }
+
+    .switch::after {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background: #aeb4cc;
+      content: "";
+      transition: transform .18s, background .18s;
+    }
+
+    [aria-checked="true"] .switch { background: rgba(66, 245, 233, .24); }
+    [aria-checked="true"] .switch::after { transform: translateX(15px); background: var(--cyan); }
+
+    .chaos-label { display: flex; justify-content: space-between; margin: 20px 0 9px; color: #b8bed6; font-size: .78rem; }
+    .chaos-label strong { color: var(--pink); font-weight: 800; }
+    input[type="range"] {
+      width: 100%;
+      height: 5px;
+      appearance: none;
+      border-radius: 9px;
+      background: linear-gradient(90deg, var(--cyan), var(--pink));
+      cursor: pointer;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      width: 17px;
+      height: 17px;
+      appearance: none;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      background: var(--pink);
+      box-shadow: 0 0 12px rgba(255,66,179,.7);
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 13px;
+      height: 13px;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      background: var(--pink);
+      box-shadow: 0 0 12px rgba(255,66,179,.7);
+    }
+
+    .footnote { margin: 18px 0 0; color: #777d98; font-size: .7rem; line-height: 1.5; text-align: center; }
+    .bottom-note { margin: 29px 0 0; color: #656b85; font-size: .72rem; text-align: center; }
+
+    .shake { animation: shake .48s cubic-bezier(.36,.07,.19,.97) both; }
+    @keyframes shake {
+      10%, 90% { transform: translate3d(-2px, 1px, 0) rotate(-.2deg); }
+      20%, 80% { transform: translate3d(4px, -2px, 0) rotate(.3deg); }
+      30%, 50%, 70% { transform: translate3d(-6px, 2px, 0) rotate(-.4deg); }
+      40%, 60% { transform: translate3d(6px, -1px, 0) rotate(.4deg); }
+    }
+
+    .result-pop { animation: result-pop .45s cubic-bezier(.2,.8,.2,1) both; }
+    @keyframes result-pop { from { opacity: .35; transform: translateY(8px) scale(.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+    .lab-section { max-width: 900px; margin: 45px auto 0; }
+    .lab-heading { margin-bottom: 17px; text-align: center; }
+    .lab-heading .eyebrow { margin-bottom: 8px; }
+    .lab-heading h2 { margin: 0; font-size: clamp(1.45rem, 4vw, 2rem); letter-spacing: -.045em; }
+    .lab-heading p { margin: 8px 0 0; color: var(--muted); font-size: .86rem; line-height: 1.55; }
+    .lab-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    .lab-card {
+      min-width: 0;
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: linear-gradient(150deg, rgba(26, 29, 48, .9), rgba(13, 15, 27, .95));
+      box-shadow: 0 15px 38px rgba(0, 0, 0, .17), inset 0 1px rgba(255,255,255,.035);
+    }
+    .lab-card-kicker { margin-bottom: 8px; color: var(--cyan); font-size: .66rem; font-weight: 850; letter-spacing: .16em; text-transform: uppercase; }
+    .lab-card h3 { margin: 0; font-size: 1.12rem; letter-spacing: -.025em; }
+    .lab-card-copy { margin: 7px 0 16px; color: #9da3bd; font-size: .81rem; line-height: 1.55; }
+    .mission-progress-row { display: flex; justify-content: space-between; margin: 17px 0 8px; color: #aeb4ce; font-size: .74rem; }
+    .mission-progress-row strong { color: var(--cyan); font-variant-numeric: tabular-nums; }
+    .progress-track { height: 9px; overflow: hidden; border: 1px solid rgba(141, 158, 211, .18); border-radius: 20px; background: #101322; }
+    .progress-fill { display: block; width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--cyan), #8786ff, var(--pink)); box-shadow: 0 0 14px rgba(66, 245, 233, .35); transition: width .45s cubic-bezier(.2,.8,.2,1); }
+    .mission-steps { display: grid; gap: 11px; margin: 17px 0; padding: 0; list-style: none; }
+    .mission-steps li { display: flex; align-items: center; gap: 10px; color: #a0a6c1; font-size: .79rem; }
+    .mission-steps li.is-done { color: #effffb; }
+    .mission-check { display: grid; width: 21px; height: 21px; flex: 0 0 21px; place-items: center; border: 1px solid rgba(157, 171, 211, .36); border-radius: 50%; color: #75809f; font-size: .68rem; }
+    .is-done .mission-check { border-color: rgba(66, 245, 233, .75); background: rgba(66, 245, 233, .14); color: var(--cyan); box-shadow: 0 0 12px rgba(66, 245, 233, .15); }
+    .mission-button, .small-action, .terminal-submit {
+      min-height: 40px;
+      padding: 0 14px;
+      border: 1px solid rgba(66, 245, 233, .35);
+      border-radius: 10px;
+      background: rgba(66, 245, 233, .11);
+      color: #c8fffb;
+      cursor: pointer;
+      font-size: .78rem;
+      font-weight: 800;
+      transition: transform .15s, background .15s, border-color .15s;
+    }
+    .mission-button:hover, .small-action:hover, .terminal-submit:hover { transform: translateY(-1px); border-color: var(--cyan); background: rgba(66, 245, 233, .2); }
+    .mission-button:disabled { cursor: default; opacity: .72; }
+    .cipher-display { display: flex; min-height: 72px; flex-direction: column; justify-content: center; gap: 5px; margin: 15px 0 10px; padding: 13px 15px; border: 1px solid rgba(255, 66, 179, .25); border-radius: 12px; background: rgba(8, 10, 20, .68); }
+    .cipher-display span { color: #a4abc7; font-size: .61rem; font-weight: 800; letter-spacing: .15em; }
+    .cipher-display strong { color: var(--pink); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 1.18rem; letter-spacing: .13em; }
+    .cipher-hint { margin: 0 0 14px; color: #9da3bd; font-size: .75rem; line-height: 1.5; }
+    .cipher-form label { display: block; margin-bottom: 7px; color: #b8bed6; font-size: .74rem; font-weight: 700; }
+    .cipher-form-row { display: flex; gap: 8px; }
+    .text-entry { min-width: 0; width: 100%; height: 41px; padding: 0 11px; border: 1px solid rgba(164, 174, 219, .24); border-radius: 9px; outline: none; background: rgba(4, 6, 14, .72); color: var(--white); font: 500 .83rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .text-entry:focus { border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(66, 245, 233, .1); }
+    .cipher-feedback { min-height: 19px; margin: 9px 0 0; color: #a6adca; font-size: .73rem; }
+    .cipher-feedback.success { color: var(--cyan); }
+    .cipher-feedback.error { color: #ff8eaa; }
+    .terminal-card { grid-column: 1 / -1; }
+    .terminal-topline { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+    .terminal-topline .lab-card-copy { margin-bottom: 13px; }
+    .terminal-badge { flex: 0 0 auto; padding: 6px 9px; border: 1px solid rgba(124, 255, 154, .25); border-radius: 20px; background: rgba(124, 255, 154, .07); color: #9cffb1; font-size: .58rem; font-weight: 850; letter-spacing: .1em; }
+    .terminal-output { display: flex; min-height: 135px; max-height: 220px; flex-direction: column; gap: 6px; overflow-y: auto; padding: 13px; border: 1px solid rgba(135, 156, 190, .18); border-radius: 11px; background: #070910; color: #a4edc4; font: .73rem/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .terminal-line { overflow-wrap: anywhere; }
+    .terminal-line.command { color: #86f6ed; }
+    .terminal-line.error { color: #ff8fa8; }
+    .terminal-line.system { color: #9aa4c1; }
+    .terminal-form { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 9px; margin-top: 10px; }
+    .terminal-prompt { color: var(--cyan); font: 700 .7rem ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    .terminal-submit { min-width: 62px; }
+    .terminal-footnote { margin: 9px 0 0; color: #6f7590; font-size: .68rem; line-height: 1.45; }
+
+    @media (max-width: 760px) {
+      .page { padding: 18px 18px 30px; }
+      .intro { padding: 29px 0 19px; }
+      .game-layout { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+      .wheel-stage { width: min(100%, 440px); }
+      .side-panel { width: min(100%, 440px); margin: 0 auto; }
+      .result-card { min-height: 117px; }
+      .lab-section { margin-top: 37px; }
+      .lab-grid { grid-template-columns: 1fr; }
+      .terminal-card { grid-column: auto; }
+    }
+
+    @media (max-width: 420px) {
+      .page { padding-right: 14px; padding-left: 14px; }
+      .creator { font-size: .62rem; letter-spacing: .1em; }
+      .status { font-size: .68rem; }
+      .side-panel { padding: 18px; }
+      .hub { width: 62px; height: 62px; }
+      .pointer { width: 33px; height: 44px; }
+      .lab-card { padding: 17px; }
+      .terminal-form { grid-template-columns: 1fr auto; }
+      .terminal-prompt { grid-column: 1 / -1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page" id="page">
+    <header class="topline">
+      <div class="creator"><span class="creator-mark" aria-hidden="true"></span>Created by Student #150096726048 </div>
+      <div class="status"><span class="status-dot" aria-hidden="true"></span>Destiny engine online</div>
+    </header>
+
+    <section class="intro" aria-labelledby="title">
+      <div class="eyebrow">✦ &nbsp;Questionable cosmic technology</div>
+      <h1 id="title">WHEEL OF <span>IMPOSSIBLE DESTINY</span></h1>
+      <p class="subtitle">One spin. Absolutely no scientific basis. A frankly suspicious amount of fate.</p>
+    </section>
+
+    <section class="game-layout" aria-label="Destiny wheel game">
+      <div class="wheel-column">
+        <div class="wheel-stage" id="wheelStage">
+          <canvas id="wheel" aria-label="Colorful wheel with eight possible outcomes"></canvas>
+          <canvas id="particles" aria-hidden="true"></canvas>
+          <div class="pointer" aria-hidden="true">
+            <svg viewBox="0 0 40 52" role="img">
+              <path d="M20 50 3 10Q1 4 8 4h24q7 0 5 6L20 50Z" fill="#42f5e9" stroke="#eaffff" stroke-width="2"/>
+              <path d="M20 39 12 13h16L20 39Z" fill="#10232c"/>
+            </svg>
+          </div>
+          <div class="hub" aria-hidden="true">✦</div>
+        </div>
+        <p class="wheel-hint">THE UNIVERSE IS NOT LIABLE FOR THE ANSWER</p>
+      </div>
+
+      <aside class="side-panel">
+        <p class="panel-label">Your extremely official prophecy</p>
+        <div class="result-card" id="resultCard" aria-live="polite" aria-atomic="true">
+          <div class="result-kicker" id="resultKicker">Awaiting your fate</div>
+          <h2 class="result-title" id="resultTitle">The wheel knows.</h2>
+          <p class="result-copy" id="resultCopy">It just refuses to tell you until you make a dramatic entrance.</p>
+        </div>
+        <button class="spin-button" id="spinButton" type="button"><span>✦</span> SPIN YOUR FATE <span>✦</span></button>
+        <div class="controls-row">
+          <button class="sound-toggle" id="soundToggle" type="button" role="switch" aria-checked="true" aria-label="Sound effects on">
+            <span class="switch" aria-hidden="true"></span><span id="soundLabel">Sound effects on</span>
+          </button>
+          <span style="color:#6f7590;font-size:.71rem">Sound starts after your first spin</span>
+        </div>
+        <label class="chaos-label" for="chaos"><span>Chaos level</span><strong id="chaosText">Mildly unhinged</strong></label>
+        <input id="chaos" type="range" min="1" max="3" step="1" value="2" aria-label="Chaos level">
+        <p class="footnote">Higher chaos adds more dramatic destiny, extra sparkle, and a non-zero chance of being roasted by the cosmos.</p>
+      </aside>
+    </section>
+
+    <section class="lab-section" aria-labelledby="labTitle">
+      <header class="lab-heading">
+        <div class="eyebrow">✦ &nbsp;AI Coding Lab // Training mode</div>
+        <h2 id="labTitle">THE COSMIC COMMS CHALLENGE</h2>
+        <p>Accept a mission, test your destiny, and decode the transmission. The terminal is a safe simulation—no commands leave this page.</p>
+      </header>
+      <div class="lab-grid">
+        <article class="lab-card" aria-labelledby="missionTitle">
+          <div class="lab-card-kicker">Mission control · 3 steps</div>
+          <h3 id="missionTitle">The Signal in the Static</h3>
+          <p class="lab-card-copy">A message from the edge of the universe needs decoding. Complete the steps to close the case.</p>
+          <div class="mission-progress-row"><span>Mission progress</span><strong id="missionCount">0 / 3</strong></div>
+          <div class="progress-track" id="missionProgress" role="progressbar" aria-label="Mission progress" aria-valuemin="0" aria-valuemax="3" aria-valuenow="0" aria-valuetext="0 of 3 steps complete">
+            <span class="progress-fill" id="progressFill"></span>
+          </div>
+          <ol class="mission-steps" aria-label="Mission steps">
+            <li id="missionStep1"><span class="mission-check" aria-hidden="true">○</span><span>Accept the cosmic assignment</span></li>
+            <li id="missionStep2"><span class="mission-check" aria-hidden="true">○</span><span>Spin your fate</span></li>
+            <li id="missionStep3"><span class="mission-check" aria-hidden="true">○</span><span>Decode the transmission</span></li>
+          </ol>
+          <button class="mission-button" id="missionButton" type="button">Accept mission</button>
+        </article>
+
+        <article class="lab-card" aria-labelledby="cipherTitle">
+          <div class="lab-card-kicker">Mini-game · Caesar cipher</div>
+          <h3 id="cipherTitle">Decode the transmission</h3>
+          <p class="lab-card-copy">The signal was encrypted by shifting each letter three places forward. Decode it by shifting back.</p>
+          <div class="cipher-display" aria-label="Encrypted message: KHOOR">
+            <span>INCOMING TRANSMISSION</span>
+            <strong id="cipherText">KHOOR</strong>
+          </div>
+          <form class="cipher-form" id="cipherForm">
+            <label for="cipherGuess">Your decoded message</label>
+            <div class="cipher-form-row">
+              <input class="text-entry" id="cipherGuess" type="text" autocomplete="off" spellcheck="false" placeholder="Type the decoded word">
+              <button class="small-action" type="submit">Decode</button>
+            </div>
+          </form>
+          <p class="cipher-feedback" id="cipherFeedback" aria-live="polite">Tip: K shifts back to H. The rest follows the same track.</p>
+        </article>
+
+        <article class="lab-card terminal-card" aria-labelledby="terminalTitle">
+          <div class="terminal-topline">
+            <div>
+              <div class="lab-card-kicker">Interactive terminal · simulation</div>
+              <h3 id="terminalTitle">Destiny command console</h3>
+              <p class="lab-card-copy">Try <code>help</code>, <code>mission start</code>, <code>spin</code>, <code>status</code>, or <code>decode 3 KHOOR</code>.</p>
+            </div>
+            <span class="terminal-badge">LOCAL SIM</span>
+          </div>
+          <div class="terminal-output" id="terminalOutput" role="log" aria-label="Terminal output" aria-live="polite" aria-relevant="additions text"></div>
+          <form class="terminal-form" id="terminalForm">
+            <label class="terminal-prompt" for="terminalInput">visitor@destiny:~$</label>
+            <input class="text-entry" id="terminalInput" type="text" autocomplete="off" spellcheck="false" aria-label="Enter a terminal command" placeholder="Type help to see commands">
+            <button class="terminal-submit" type="submit">Run</button>
+          </form>
+          <p class="terminal-footnote">This is a fictional command console. It only accepts the listed game commands and never runs operating-system commands or contacts a server.</p>
+        </article>
+      </div>
+    </section>
+    <p class="bottom-note">No actual futures were harmed in the making of this wheel.</p>
+  </main>
+
+  <script>
+    (() => {
+      "use strict";
+
+      // The alphabet is a 26-stop roller coaster: negative shifts loop around, so no letter falls off.
+      function decodeMessage(message, shift) {
+        const text = String(message ?? "");
+        const amount = Number(shift);
+        const normalizedShift = Number.isFinite(amount) ? ((Math.trunc(amount) % 26) + 26) % 26 : 0;
+        return text.replace(/[a-z]/gi, letter => {
+          const base = letter === letter.toUpperCase() ? 65 : 97;
+          return String.fromCharCode((letter.charCodeAt(0) - base - normalizedShift + 26) % 26 + base);
+        });
+      }
+
+      console.assert(decodeMessage("KHOOR, ZRUOG!", 3) === "HELLO, WORLD!" && decodeMessage("Same", 0) === "Same", "Normal message and zero-shift decoding");
+      console.assert(decodeMessage("", 3) === "", "Empty message stays empty");
+      console.assert(decodeMessage("EBIIL", -3) === "HELLO", "Negative shifts wrap around correctly");
+
+      const outcomes = [
+        { title: "Main Character Energy", copy: "A mysterious breeze appears indoors. The soundtrack is definitely about you.", color: "#ff42b3", glyph: "✧" },
+        { title: "Snack-Based Enlightenment", copy: "The answer was in the pantry all along. It was chips.", color: "#9977ff", glyph: "◈" },
+        { title: "The Plot Thickens", copy: "A tiny inconvenience is about to become a very compelling story.", color: "#42bfff", glyph: "✦" },
+        { title: "Unexpected Side Quest", copy: "You will go out for one thing and return with a completely different anecdote.", color: "#35e9cf", glyph: "➶" },
+        { title: "Mildly Legendary", copy: "Someone will say “nice” about something you do. Accept your award gracefully.", color: "#a0ef69", glyph: "★" },
+        { title: "The Universe Says: Maybe", copy: "Cosmic customer support has escalated your request to a higher dimension.", color: "#ffe66d", glyph: "?" },
+        { title: "Suspiciously Good Luck", copy: "Your next tiny win will be wildly over-celebrated. As it should be.", color: "#ff9854", glyph: "♛" },
+        { title: "A Pigeon Knows", copy: "Somewhere, a pigeon has seen the future. It is not sharing. Typical.", color: "#ef73eb", glyph: "◉" },
+        { title: "SECRET: The Cheese Prophecy", copy: "The moon is made of cheese. The moon denies this. One of them is lying.", color: "#fff078", glyph: "☾", secret: true },
+        { title: "SECRET: Become The Cloud", copy: "For exactly 4 seconds, you will wonder what it feels like to be weather.", color: "#8deaff", glyph: "☁", secret: true },
+        { title: "SECRET: Dramatic Entrance", copy: "You are about to walk into a room like you have theme music. You do not.", color: "#ff6c7c", glyph: "!", secret: true }
+      ];
+      const wedges = outcomes.slice(0, 8);
+      const palette = wedges.map(item => item.color);
+      const TAU = Math.PI * 2;
+      const canvas = document.getElementById("wheel");
+      const ctx = canvas.getContext("2d");
+      const particleCanvas = document.getElementById("particles");
+      const particleCtx = particleCanvas.getContext("2d");
+      const stage = document.getElementById("wheelStage");
+      const page = document.getElementById("page");
+      const button = document.getElementById("spinButton");
+      const chaos = document.getElementById("chaos");
+      const chaosText = document.getElementById("chaosText");
+      const resultCard = document.getElementById("resultCard");
+      const missionButton = document.getElementById("missionButton");
+      const missionProgress = document.getElementById("missionProgress");
+      const progressFill = document.getElementById("progressFill");
+      const missionCount = document.getElementById("missionCount");
+      const terminalOutput = document.getElementById("terminalOutput");
+      const terminalForm = document.getElementById("terminalForm");
+      const terminalInput = document.getElementById("terminalInput");
+      const cipherForm = document.getElementById("cipherForm");
+      const cipherGuess = document.getElementById("cipherGuess");
+      const cipherFeedback = document.getElementById("cipherFeedback");
+      const challenge = { cipherText: "KHOOR", shift: 3 };
+      const mission = { started: false, spun: false, decoded: false };
+      let width = 0, height = 0, dpr = 1;
+      let rotation = 0, spinning = false, soundOn = true, audioContext = null;
+      let particles = [], animationFrame = 0, lastTickIndex = -1;
+
+      function resize() {
+        const rect = stage.getBoundingClientRect();
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        width = rect.width;
+        height = rect.height;
+        canvas.width = Math.round(width * dpr);
+        canvas.height = Math.round(height * dpr);
+        particleCanvas.width = Math.round(width * dpr);
+        particleCanvas.height = Math.round(height * dpr);
+        canvas.style.width = particleCanvas.style.width = `${width}px`;
+        canvas.style.height = particleCanvas.style.height = `${height}px`;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        particleCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        drawWheel();
+      }
+
+      function drawWheel() {
+        if (!width || !height) return;
+        const cx = width / 2, cy = height / 2, radius = Math.min(width, height) * .465;
+        ctx.clearRect(0, 0, width, height);
+        ctx.save();
+        ctx.translate(cx, cy);
+        ctx.rotate(rotation);
+        const arc = TAU / wedges.length;
+        wedges.forEach((item, index) => {
+          const start = index * arc - Math.PI / 2;
+          const end = start + arc;
+          const grad = ctx.createLinearGradient(-radius, -radius, radius, radius);
+          grad.addColorStop(0, item.color);
+          grad.addColorStop(1, shade(item.color, -.34));
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.arc(0, 0, radius, start, end);
+          ctx.closePath();
+          ctx.fillStyle = grad;
+          ctx.fill();
+          ctx.strokeStyle = "rgba(8, 10, 18, .88)";
+          ctx.lineWidth = 2.5;
+          ctx.stroke();
+          ctx.save();
+          ctx.rotate(start + arc / 2);
+          ctx.textAlign = "right";
+          ctx.textBaseline = "middle";
+          ctx.shadowColor = "rgba(0,0,0,.45)";
+          ctx.shadowBlur = 5;
+          ctx.fillStyle = "#fff";
+          ctx.font = `900 ${Math.max(12, radius * .078)}px system-ui, sans-serif`;
+          ctx.fillText(item.glyph, radius * .84, 0);
+          ctx.font = `800 ${Math.max(8.5, radius * .043)}px system-ui, sans-serif`;
+          ctx.fillStyle = "rgba(255,255,255,.94)";
+          ctx.fillText(item.title.toUpperCase(), radius * .72, 0);
+          ctx.restore();
+        });
+        ctx.beginPath();
+        ctx.arc(0, 0, radius, 0, TAU);
+        ctx.strokeStyle = "rgba(255,255,255,.8)";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      function shade(hex, amount) {
+        const value = hex.replace("#", "");
+        const num = parseInt(value, 16);
+        return `rgb(${Math.max(0, Math.min(255, ((num >> 16) & 255) * (1 + amount)))},${Math.max(0, Math.min(255, ((num >> 8) & 255) * (1 + amount)))},${Math.max(0, Math.min(255, (num & 255) * (1 + amount)))})`;
+      }
+
+      function currentWedge() {
+        const arc = TAU / wedges.length;
+        const angle = ((-rotation) % TAU + TAU) % TAU;
+        return Math.floor(angle / arc) % wedges.length;
+      }
+
+      function updateMission() {
+        const steps = [
+          mission.started,
+          mission.started && mission.spun,
+          mission.started && mission.decoded
+        ];
+        const completed = steps.filter(Boolean).length;
+        const allDone = completed === 3;
+        missionCount.textContent = `${completed} / 3`;
+        missionProgress.setAttribute("aria-valuenow", String(completed));
+        missionProgress.setAttribute("aria-valuetext", `${completed} of 3 steps complete`);
+        progressFill.style.width = `${completed / 3 * 100}%`;
+        steps.forEach((done, index) => {
+          const row = document.getElementById(`missionStep${index + 1}`);
+          row.classList.toggle("is-done", done);
+          row.querySelector(".mission-check").textContent = done ? "✓" : "○";
+        });
+        missionButton.textContent = allDone ? "Mission complete!" : mission.started ? "Mission active" : "Accept mission";
+        missionButton.disabled = mission.started;
+      }
+
+      function startMission() {
+        if (mission.started) return false;
+        mission.started = true;
+        updateMission();
+        return true;
+      }
+
+      function appendTerminal(message, type = "system") {
+        const line = document.createElement("div");
+        line.className = `terminal-line ${type}`;
+        line.textContent = message;
+        terminalOutput.appendChild(line);
+        while (terminalOutput.children.length > 28) {
+          terminalOutput.removeChild(terminalOutput.firstElementChild);
+        }
+        terminalOutput.scrollTop = terminalOutput.scrollHeight;
+      }
+
+      function recordDecodedMessage(message) {
+        const answer = decodeMessage(challenge.cipherText, challenge.shift);
+        const correct = String(message).trim().toUpperCase() === answer;
+        if (correct) {
+          mission.decoded = true;
+          updateMission();
+          cipherFeedback.className = "cipher-feedback success";
+          cipherFeedback.textContent = `Transmission decoded: ${answer}. The universe says hi.`;
+        }
+        return correct;
+      }
+
+      function runTerminalCommand(rawCommand) {
+        const command = rawCommand.trim();
+        if (!command) {
+          appendTerminal("Type help to see the available commands.", "error");
+          return;
+        }
+        appendTerminal(`visitor@destiny:~$ ${command}`, "command");
+        const [name, ...args] = command.split(/\s+/);
+        const action = name.toLowerCase();
+
+        if (action === "help") {
+          appendTerminal("Available commands: help, status, mission start, spin, decode <shift> <message>, clear.");
+        } else if (action === "status") {
+          const count = mission.started ? 1 + Number(mission.spun) + Number(mission.decoded) : 0;
+          appendTerminal(`Mission ${mission.started ? "active" : "not started"} · ${count}/3 steps complete.`);
+        } else if (action === "mission") {
+          if (args[0]?.toLowerCase() === "start") {
+            appendTerminal(startMission() ? "Mission accepted. Spin the wheel and decode KHOOR." : "Mission already accepted. Finish the remaining steps.");
+          } else {
+            appendTerminal("Use mission start to accept The Signal in the Static.");
+          }
+        } else if (action === "spin") {
+          if (spinning) {
+            appendTerminal("The wheel is already spinning. Destiny is dramatic, not multi-threaded.", "error");
+          } else {
+            appendTerminal("Wheel engaged. Please keep hands and prophecies inside the ride.");
+            spin();
+          }
+        } else if (action === "decode") {
+          const match = command.match(/^decode\s+(-?\d+)\s+(.+)$/i);
+          if (!match) {
+            appendTerminal("Usage: decode <shift> <message> — example: decode 3 KHOOR", "error");
+          } else {
+            const decoded = decodeMessage(match[2], Number(match[1]));
+            appendTerminal(`Decoded message: ${decoded}`);
+            if (recordDecodedMessage(decoded)) appendTerminal("Challenge solved. Mission progress updated.");
+          }
+        } else if (action === "clear") {
+          terminalOutput.textContent = "";
+          appendTerminal("Console cleared. Destiny remains questionable.");
+        } else {
+          appendTerminal(`Unknown command: ${name}. This safe terminal only accepts listed commands. Type help.`, "error");
+        }
+      }
+
+      function ensureAudio() {
+        if (!soundOn) return null;
+        const AudioCtor = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtor) return null;
+        if (!audioContext) audioContext = new AudioCtor();
+        if (audioContext.state === "suspended") audioContext.resume();
+        return audioContext;
+      }
+
+      function tone(frequency, duration, type = "sine", volume = .045, delay = 0) {
+        const audio = ensureAudio();
+        if (!audio) return;
+        const now = audio.currentTime + delay;
+        const oscillator = audio.createOscillator();
+        const gain = audio.createGain();
+        oscillator.type = type;
+        oscillator.frequency.setValueAtTime(frequency, now);
+        oscillator.frequency.exponentialRampToValueAtTime(Math.max(40, frequency * .62), now + duration);
+        gain.gain.setValueAtTime(volume, now);
+        gain.gain.exponentialRampToValueAtTime(.001, now + duration);
+        oscillator.connect(gain);
+        gain.connect(audio.destination);
+        oscillator.start(now);
+        oscillator.stop(now + duration);
+      }
+
+      function tick(index) {
+        if (index === lastTickIndex) return;
+        lastTickIndex = index;
+        const level = Number(chaos.value);
+        tone(370 + level * 75, .055, "triangle", .025);
+      }
+
+      function playWin(secret) {
+        tone(secret ? 520 : 390, .18, "sine", .07);
+        tone(secret ? 780 : 590, .24, "triangle", .05, .10);
+        tone(secret ? 1040 : 780, .33, "sine", .045, .22);
+        if (secret) tone(1318, .5, "square", .025, .34);
+      }
+
+      function burst(count, colorList, strength = 1) {
+        const rect = stage.getBoundingClientRect();
+        const centerX = rect.width / 2, centerY = rect.height / 2;
+        for (let i = 0; i < count; i++) {
+          const angle = Math.random() * TAU;
+          const speed = (1.8 + Math.random() * 5.3) * strength;
+          particles.push({
+            x: centerX + (Math.random() - .5) * rect.width * .42,
+            y: centerY + (Math.random() - .5) * rect.height * .42,
+            vx: Math.cos(angle) * speed,
+            vy: Math.sin(angle) * speed,
+            size: 2 + Math.random() * (4 + strength),
+            life: .75 + Math.random() * .7,
+            maxLife: 1.45,
+            color: colorList[Math.floor(Math.random() * colorList.length)],
+            spin: (Math.random() - .5) * .25,
+            angle: Math.random() * TAU,
+            shape: Math.random() > .5 ? "dot" : "square"
+          });
+        }
+        if (!animationFrame) animateParticles();
+      }
+
+      function animateParticles() {
+        animationFrame = requestAnimationFrame(animateParticles);
+        particleCtx.clearRect(0, 0, width, height);
+        particles = particles.filter(p => p.life > 0);
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vx *= .985;
+          p.vy = p.vy * .985 + .035;
+          p.angle += p.spin;
+          p.life -= .016;
+          particleCtx.save();
+          particleCtx.globalAlpha = Math.min(1, p.life * 1.6);
+          particleCtx.translate(p.x, p.y);
+          particleCtx.rotate(p.angle);
+          particleCtx.fillStyle = p.color;
+          particleCtx.shadowColor = p.color;
+          particleCtx.shadowBlur = 9;
+          if (p.shape === "dot") {
+            particleCtx.beginPath();
+            particleCtx.arc(0, 0, p.size * .55, 0, TAU);
+            particleCtx.fill();
+          } else {
+            particleCtx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+          }
+          particleCtx.restore();
+        });
+        if (!particles.length) {
+          cancelAnimationFrame(animationFrame);
+          animationFrame = 0;
+          particleCtx.clearRect(0, 0, width, height);
+        }
+      }
+
+      function shake(intensity) {
+        page.classList.remove("shake");
+        page.style.setProperty("--unused-shake", intensity);
+        void page.offsetWidth;
+        page.classList.add("shake");
+        window.setTimeout(() => page.classList.remove("shake"), 520);
+      }
+
+      function pickOutcome(level) {
+        const secretChance = [0, .08, .18, .32][level];
+        if (Math.random() < secretChance) return outcomes[8 + Math.floor(Math.random() * (level === 3 ? 3 : 2))];
+        return wedges[Math.floor(Math.random() * wedges.length)];
+      }
+
+      function spin() {
+        if (spinning) return;
+        ensureAudio();
+        spinning = true;
+        button.disabled = true;
+        button.innerHTML = "<span>✦</span> DESTINY LOADING <span>✦</span>";
+        lastTickIndex = -1;
+        const level = Number(chaos.value);
+        const selected = pickOutcome(level);
+        let winningIndex = wedges.indexOf(selected);
+        if (winningIndex < 0) winningIndex = wedges.findIndex(item => item.color === selected.color);
+        const arc = TAU / wedges.length;
+        const desired = -(winningIndex + .5) * arc;
+        const currentPositive = ((rotation % TAU) + TAU) % TAU;
+        const targetPositive = ((desired % TAU) + TAU) % TAU;
+        const delta = (targetPositive - currentPositive + TAU) % TAU;
+        const fullTurns = 5 + level * 2 + Math.floor(Math.random() * 3);
+        const startRotation = rotation;
+        const targetRotation = rotation + fullTurns * TAU + delta;
+        const startTime = performance.now();
+        const duration = 4400 + level * 900 + Math.random() * 500;
+
+        function frame(now) {
+          const progress = Math.min(1, (now - startTime) / duration);
+          const eased = 1 - Math.pow(1 - progress, 4.1);
+          rotation = startRotation + (targetRotation - startRotation) * eased;
+          drawWheel();
+          tick(currentWedge());
+          if (progress < 1) {
+            requestAnimationFrame(frame);
+          } else {
+            rotation = targetRotation;
+            drawWheel();
+            finishSpin(selected, level);
+          }
+        }
+        requestAnimationFrame(frame);
+      }
+
+      function finishSpin(result, level) {
+        spinning = false;
+        button.disabled = false;
+        button.innerHTML = "<span>✦</span> SPIN AGAIN <span>✦</span>";
+        const secret = Boolean(result.secret);
+        document.getElementById("resultKicker").textContent = secret ? "⚠ improbable cosmic anomaly" : "The cosmos has spoken";
+        document.getElementById("resultTitle").textContent = result.title;
+        document.getElementById("resultCopy").textContent = result.copy;
+        resultCard.style.borderColor = result.color + "66";
+        resultCard.style.boxShadow = `0 0 28px ${result.color}20`;
+        resultCard.classList.remove("result-pop");
+        void resultCard.offsetWidth;
+        resultCard.classList.add("result-pop");
+        const particleCount = 45 + level * 30 + (secret ? 55 : 0);
+        burst(particleCount, secret ? [result.color, "#fff", "#42f5e9", "#ff42b3"] : [result.color, "#ffffff", "#42f5e9", "#9977ff"], 1 + level * .18);
+        if (level > 1 || secret) shake(level === 3 || secret ? 1 : .5);
+        playWin(secret);
+        if (mission.started) {
+          mission.spun = true;
+          updateMission();
+          appendTerminal("Fate spin logged. Mission progress updated.");
+        }
+      }
+
+      button.addEventListener("click", spin);
+      missionButton.addEventListener("click", () => {
+        if (startMission()) appendTerminal("Mission accepted: The Signal in the Static. Spin the wheel, then decode KHOOR.");
+      });
+      cipherForm.addEventListener("submit", event => {
+        event.preventDefault();
+        const guess = cipherGuess.value.trim();
+        if (!guess) {
+          cipherFeedback.className = "cipher-feedback error";
+          cipherFeedback.textContent = "Enter your decoded message first.";
+          return;
+        }
+        if (recordDecodedMessage(guess)) {
+          appendTerminal("Mini-game transmission decoded. Mission progress updated.");
+        } else {
+          cipherFeedback.className = "cipher-feedback error";
+          cipherFeedback.textContent = "Not quite. Shift each letter back three places and try again.";
+        }
+      });
+      terminalForm.addEventListener("submit", event => {
+        event.preventDefault();
+        runTerminalCommand(terminalInput.value);
+        terminalInput.value = "";
+        terminalInput.focus();
+      });
+      document.getElementById("soundToggle").addEventListener("click", event => {
+        soundOn = !soundOn;
+        const toggle = event.currentTarget;
+        toggle.setAttribute("aria-checked", String(soundOn));
+        toggle.setAttribute("aria-label", `Sound effects ${soundOn ? "on" : "off"}`);
+        document.getElementById("soundLabel").textContent = `Sound effects ${soundOn ? "on" : "off"}`;
+        if (soundOn) {
+          ensureAudio();
+          tone(580, .12, "sine", .035);
+        }
+      });
+      chaos.addEventListener("input", () => {
+        const labels = { 1: "Mildly unhinged", 2: "Cosmically chaotic", 3: "Full chaos" };
+        chaosText.textContent = labels[chaos.value];
+      });
+      updateMission();
+      appendTerminal("COSMIC COMMS // secure training simulation ready.");
+      appendTerminal("This is not a real shell. Type help to see the game commands.");
+      window.addEventListener("resize", resize);
+      resize();
+    })();
+  </script>
+</body>
+</html>
+```

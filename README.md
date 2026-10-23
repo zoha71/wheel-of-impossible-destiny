@@ -8,7 +8,7 @@ An interactive, neon-themed physics arcade wheel and AI Coding Lab exercise. The
 - **Student:** Zoha Shaikh
 - **Student number:** 150096726048
 - **GitHub repository:** https://github.com/zoha71/wheel-of-impossible-destiny
-- **GitHub Pages URL:** _Add your published URL here after enabling Pages._
+- **GitHub Pages URL:** (https://zoha71.github.io/wheel-of-impossible-destiny/)
   
 ## Run the app
 

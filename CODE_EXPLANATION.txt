@@ -1,0 +1,21 @@
+WHEEL OF IMPOSSIBLE DESTINY — CODE EXPLANATION
+
+FILE STRUCTURE
+The complete app is index.html. Its <style> block contains the page styles, and its inline <script> contains the vanilla JavaScript. There is no framework, package installation, backend, or external runtime dependency.
+
+EXISTING WHEEL
+The wheel is drawn with the Canvas 2D API. A selected result determines the wheel's target angle; requestAnimationFrame updates the rotation until the spin finishes. The existing result collection includes hidden outcomes. Particle effects are drawn on a second canvas, screen shake uses CSS animation, and sound effects are generated with the Web Audio API after a user gesture.
+
+decodeMessage(message, shift)
+The Caesar-cipher function accepts a message and a numeric shift. For each English letter, it moves backward by the normalized shift, preserves letter case, and leaves spaces, punctuation, and other non-letter characters unchanged. The shift is normalized modulo 26, so values that wrap past A or Z work correctly. A negative shift naturally decodes in the opposite direction. Empty text remains empty, and a zero shift leaves the message unchanged.
+
+The immediately preceding code comment compares the 26-letter alphabet to a looping roller coaster. Exactly three console.assert checks run on page load: ordinary decoding (also checking a zero shift), empty input, and a negative shift.
+
+MISSION AND PROGRESS
+Accepting the mission completes step one. Finishing a wheel spin completes step two. Decoding the mini-game's KHOOR transmission as HELLO completes step three. updateMission() updates the text, visual progress bar, step indicators, and accessible progress-bar values together.
+
+CIPHER MINI-GAME
+The mini-game calls decodeMessage() with the displayed cipher text and shift, then compares the player's case-insensitive answer with the decoded result. The terminal's decode command uses the same function, so both interfaces exercise the same cipher logic.
+
+SIMULATED TERMINAL
+The terminal is an in-page command router with a small allowlist: help, status, mission start, spin, decode <shift> <message>, and clear. It does not use eval, launch a shell, send network requests, or run server-side code. Terminal output is inserted as text, not interpreted as HTML.

@@ -1,0 +1,25 @@
+WHEEL OF IMPOSSIBLE DESTINY — DEBUGGING NOTE
+
+RUNNING LOCALLY
+- Open index.html directly in a current browser. No server, install, or build step is required.
+- Sound effects are synthesized by the browser and begin after a user interaction. If you hear nothing, check the sound toggle and browser volume.
+
+GITHUB PAGES
+- Confirm index.html is at the repository root and is spelled exactly in lowercase.
+- In the existing repository, open Settings > Pages and select Deploy from a branch, branch main, folder /(root).
+- Check the repository's Actions tab for the Pages deployment status. A first publish can take a few minutes.
+- If the site shows an old version, wait for deployment to finish, then hard-refresh the browser.
+- If Pages shows a 404, check the published URL displayed in Settings > Pages and confirm the selected branch and folder.
+
+INTERACTIONS
+- The mission progress starts at 0/3. Accept the mission, spin the wheel, and decode KHOOR as HELLO.
+- The terminal is a deliberately limited simulation. Type help to see its supported commands. Arbitrary shell commands are not executed.
+- The Caesar mini-game accepts the decoded answer without regard to letter case.
+- To decode in the terminal, enter: decode 3 KHOOR
+
+ASSERTION CHECKS
+- Three console.assert checks run when the page loads: normal input and zero shift, empty input, and a negative shift.
+- Successful assertions are silent in browser developer tools. An assertion error indicates a failed check; reload after updating the file to run them again.
+- Open browser developer tools (usually F12 or Ctrl+Shift+I; on macOS, Option+Command+I) and select Console to inspect errors.
+
+The page is self-contained and has no backend or external JavaScript dependency. Keep index.html in the repository root for the standard GitHub Pages branch-and-root setup.
